@@ -1,0 +1,25 @@
+{
+  "name": "novo-projeto-2",
+  "version": "1.0.0",
+  "description": "api pix efi",
+  "main": "index.js",
+  "scripts": {
+    "start:dev": "nodemon src/server.js"
+  },
+  "keywords": [
+    "api",
+    "pix",
+    "efi"
+  ],
+  "author": "Jonathan Sabatine",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.6.8",
+    "nvm": "^0.0.4"
+  },
+  "devDependencies": {
+    "dotenv": "^16.4.5",
+    "nodemon": "^3.1.0"
+  }
+  
+}
