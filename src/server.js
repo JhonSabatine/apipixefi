@@ -25,8 +25,8 @@ const app = express();
 
 app.set('view engine', 'ejs');
 app.set('views', 'src/views');
-app.get('/', (req, res) => {
-    axios({
+app.get('/', async (req, res) => {
+    const authResponse = await axios({
         method: 'POST',
         url: `${process.env.EFI_ENDPOINT}/oauth/token`,
         headers: {
@@ -37,40 +37,41 @@ app.get('/', (req, res) => {
         data: {
             grant_type: 'client_credentials'
         }
-    }).then((response) => {
-        const accessToken = response.data?.access_token;
-    
-        const reqEF = axios.create({
-            baseURL: process.env.EFI_ENDPOINT,
-            httpsAgent: agent,
-            headers: {
-                Authorization: `Bearer ${accessToken}`,
-                'Content-Type': 'application/json',
-            }
-        });
-    
-        const dataCob = {
-            calendario: {
-                expiracao: 3600
-              },
-              devedor: {
-                cpf: '12345678909',
-                nome: 'Francisco da Silva'
-              },
-              valor: {
-                original: '100.00'
-              },
-              chave: '71cdf9ba-c695-4e3c-b010-abb521a3f1be',
-              solicitacaoPagador: 'Cobrança dos serviços prestados'
-            };   
-        
-    
-        reqEF.post('/v2/cob', dataCob,).then((response) => res.send(response.data));
-        
     });
 
+    const accessToken = authResponse.data?.access_token;
 
-});
+    const reqEF = axios.create({
+        baseURL: process.env.EFI_ENDPOINT,
+        httpsAgent: agent,
+        headers: {
+            Authorization: `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
+        }
+    });
+
+    const dataCob = {
+        calendario: {
+            expiracao: 3600
+            },
+            devedor: {
+            cpf: '12345678909',
+            nome: 'Francisco da Silva'
+            },
+            valor: {
+            original: '100.00'
+            },
+            chave: '71cdf9ba-c695-4e3c-b010-abb521a3f1be',
+            solicitacaoPagador: 'Cobrança dos serviços prestados'
+        };   
+
+
+    const cobResponse = await reqEF.post('/v2/cob', dataCob,);
+
+    res.send(cobResponse.data);
+
+
+    });
 
 app.listen(8000, () => {
     console.log('running');
