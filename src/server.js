@@ -68,7 +68,9 @@ app.get('/', async (req, res) => {
 
     const cobResponse = await reqEF.post('/v2/cob', dataCob,);
 
-    res.send(cobResponse.data);
+    const qrcodeResponse = await reqEF.get(`/v2/loc/${cobResponse.data.loc.id}/qrcode`);
+    
+    res.render('qrcode', {qrcodeimage: qrcodeResponse.data.imagemQrcode})
 
 
     });
