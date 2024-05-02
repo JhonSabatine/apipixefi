@@ -3,9 +3,12 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const express = require('express');
+const bodyParser = require('body-parser');
 const efiRequest = require('./apis/efi');
 
 const app = express();
+
+app.use(bodyParser.json());
 
 app.set('view engine', 'ejs');
 app.set('views', 'src/views');
@@ -50,6 +53,11 @@ app.get('/cobrancas', async(req, res) => {
     res.send(cobResponse.data);
 
 });   
+
+app.post('/webhook(/pix)?', (req, res) => {
+    console.log(req.body);
+    res.send('200');
+});
 
 
 app.listen(8000, () => {
