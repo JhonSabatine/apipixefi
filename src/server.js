@@ -29,9 +29,9 @@ app.get('/', async (req, res) => {
             nome: 'Francisco da Silva'
             },
             valor: {
-            original: '100.00'
+            original: '1.00'
             },
-            chave: '71cdf9ba-c695-4e3c-b010-abb521a3f1be',
+            chave: 'acd3408c-a542-4f63-8732-7d581fef09d9',
             solicitacaoPagador: 'Cobrança dos serviços prestados'
         };   
 
