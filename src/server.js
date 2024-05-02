@@ -10,7 +10,10 @@ const app = express();
 app.set('view engine', 'ejs');
 app.set('views', 'src/views');
 
-const reqEFAlready = efiRequest();
+const reqEFAlready = efiRequest({
+    clientID: process.env.EFI_CLIENT_ID,
+    clientSecret: process.env.EFI_CLIENT_SECRET
+});
 
 app.get('/', async (req, res) => {
     const reqEF = await reqEFAlready;
@@ -38,6 +41,16 @@ app.get('/', async (req, res) => {
 
 
     });
+
+app.get('/cobrancas', async(req, res) => {
+    const reqEF = await reqEFAlready;
+
+    const cobResponse = await reqEF.get('/v2/cob?inicio=2024-04-01T16:00:35Z&fim=2024-05-02T20:10:00Z');
+    
+    res.send(cobResponse.data);
+
+});   
+
 
 app.listen(8000, () => {
     console.log('running');
